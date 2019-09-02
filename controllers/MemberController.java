@@ -8,7 +8,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.bank.web.domains.CustomerBean;
-
+import com.bank.web.services.MemberService;
+import com.bank.web.servicesimpl.MemberServiceImpl;
 
 @WebServlet("/member.do")
 public class MemberController extends HttpServlet {
@@ -18,19 +19,24 @@ public class MemberController extends HttpServlet {
   //  }
 	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// 역직렬화
 		System.out.println("맥락이 맞아서 여기 도착");    
 		String id = request.getParameter("id");
 		String pw = request.getParameter("pw");
 		String name = request.getParameter("name");
 		String ssn = request.getParameter("ssn");
 		String credit = request.getParameter("credit");
-		CustomerBean c = new CustomerBean();
-		c.setCredit(credit);
-		c.setId(id);
-		c.setName(name);
-		c.setPw(pw);
-		c.setSsn(ssn);
-		System.out.println("회원정보 : "+ c.toString());
+		CustomerBean param = new CustomerBean();
+		param.setCredit(credit);
+		param.setId(id);
+		param.setName(name);
+		param.setPw(pw);
+		param.setSsn(ssn);
+		System.out.println("회원정보 : "+ param.toString());
+		
+		MemberService service = new MemberServiceImpl();
+		service.join(param);
+		
 		response.getWriter().append("Served at: ").append(request.getContextPath());
 	}
 
